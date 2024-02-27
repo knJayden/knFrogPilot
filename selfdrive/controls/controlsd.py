@@ -184,6 +184,7 @@ class Controls:
     self.drive_added = False
     self.driving_gear = False
     self.fcw_random_event_triggered = False
+    self.frogpilot_variables.disable_reverse_cruise_increase = False
     self.holiday_theme_alerted = False
     self.previously_enabled = False
     self.openpilot_crashed = False
@@ -196,6 +197,7 @@ class Controls:
     self.max_acceleration = 0
     self.previous_lead_distance = 0
     self.previous_speed_limit = SpeedLimitController.desired_speed_limit
+    self.previous_v_cruise_cluster_kph = 0
     self.random_event_timer = 0
 
     ignore = self.sensor_packets + ['testJoystick']
@@ -877,6 +879,15 @@ class Controls:
 
     # FrogPilot functions
     frogpilot_plan = self.sm['frogpilotPlan']
+
+    # Disable reverse cruise increase on long press for PCM vehicles
+    if self.frogpilot_variables.reverse_cruise_increase and self.CP.pcmCruise and self.sm.frame % 50 == 0:
+      if self.v_cruise_helper.v_cruise_cluster_kph != self.previous_v_cruise_cluster_kph:
+        self.frogpilot_variables.disable_reverse_cruise_increase = True
+      else:
+        self.frogpilot_variables.disable_reverse_cruise_increase = False
+
+      self.previous_v_cruise_cluster_kph = self.v_cruise_helper.v_cruise_cluster_kph
 
     # Reset the Random Event flag after 5 seconds
     if self.random_event_triggered:
