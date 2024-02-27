@@ -492,6 +492,15 @@ DevicePanel::DevicePanel(SettingsWindow *parent) : ListWidget(parent) {
   });
   addItem(flashPandaBtn);
 
+  auto lockDoorsButton = new ButtonControl(tr("Lock Doors"), tr("LOCK"), tr("Use this button to lock the doors on Toyota/Lexus vehicles."));
+  connect(lockDoorsButton, &ButtonControl::clicked, [this]() {
+    QProcess *process = new QProcess(this);
+    QString scriptPath = "/data/openpilot/selfdrive/frogpilot/functions/lock_doors.py";
+    QStringList arguments{"--lock"};
+    process->start("python3", QStringList() << scriptPath << arguments);
+  });
+  addItem(lockDoorsButton);
+
   QObject::connect(uiState(), &UIState::offroadTransition, [=](bool offroad) {
     for (auto btn : findChildren<ButtonControl *>()) {
       btn->setEnabled(offroad);
