@@ -266,7 +266,10 @@ private:
 
   QTimer *animationTimer;
 
-  inline QColor greenColor(int alpha = 242) { return QColor(23, 134, 68, alpha); }
+  inline QColor blueColor(int alpha = 255) { return QColor(25, 150, 225, alpha); }
+  inline QColor greenColor(int alpha = 255) { return QColor(25, 150, 0, alpha); }
+  inline QColor orangeColor(int alpha = 255) { return QColor(225, 100, 25, alpha); }
+  inline QColor yellowColor(int alpha = 255) { return QColor(225, 225, 0, alpha); }
 
 protected:
   void paintGL() override;
@@ -274,7 +277,7 @@ protected:
   void showEvent(QShowEvent *event) override;
   void updateFrameMat() override;
   void drawLaneLines(QPainter &painter, const UIState *s);
-  void drawLead(QPainter &painter, const cereal::RadarState::LeadData::Reader &lead_data, const QPointF &vd);
+  void drawLead(QPainter &painter, const cereal::RadarState::LeadData::Reader &lead_data, const QPointF &vd, const int lead_value=0);
   void drawHud(QPainter &p);
   void drawDriverState(QPainter &painter, const UIState *s);
   void paintEvent(QPaintEvent *event) override;

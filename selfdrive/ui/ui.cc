@@ -44,8 +44,13 @@ int get_path_length_idx(const cereal::XYZTData::Reader &line, const float path_h
 }
 
 void update_leads(UIState *s, const cereal::RadarState::Reader &radar_state, const cereal::XYZTData::Reader &line) {
-  for (int i = 0; i < 2; ++i) {
-    auto lead_data = (i == 0) ? radar_state.getLeadOne() : radar_state.getLeadTwo();
+  for (int i = 0; i < 6; ++i) {
+    auto lead_data = (i == 0) ? radar_state.getLeadOne() :
+                     (i == 1) ? radar_state.getLeadTwo() :
+                     (i == 2) ? radar_state.getLeadLeft() :
+                     (i == 3) ? radar_state.getLeadRight() :
+                     (i == 4) ? radar_state.getLeadLeftFar() :
+                                radar_state.getLeadRightFar();
     if (lead_data.getStatus()) {
       float z = line.getZ()[get_path_length_idx(line, lead_data.getDRel())];
       calib_frame_to_full_frame(s, lead_data.getDRel(), -lead_data.getYRel(), z + 1.22, &s->scene.lead_vertices[i]);

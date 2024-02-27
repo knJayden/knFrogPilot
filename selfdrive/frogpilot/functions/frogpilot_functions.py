@@ -68,7 +68,7 @@ class FrogPilotFunctions:
     return interp(v_ego, A_CRUISE_MAX_BP_CUSTOM, A_CRUISE_MAX_VALS_SPORT)
 
   @staticmethod
-  def calculate_lane_width(lane, current_lane, road_edge):
+  def calculate_lane_width(lane, current_lane, road_edge, use_max=False):
     lane_x, lane_y = np.array(lane.x), np.array(lane.y)
     edge_x, edge_y = np.array(road_edge.x), np.array(road_edge.y)
     current_x, current_y = np.array(current_lane.x), np.array(current_lane.y)
@@ -79,7 +79,7 @@ class FrogPilotFunctions:
     distance_to_lane = np.mean(np.abs(current_y - lane_y_interp))
     distance_to_road_edge = np.mean(np.abs(current_y - road_edge_y_interp))
 
-    return min(distance_to_lane, distance_to_road_edge)
+    return min(distance_to_lane, distance_to_road_edge) if not use_max else max(distance_to_lane, distance_to_road_edge)
 
   @property
   def current_personality(self):
