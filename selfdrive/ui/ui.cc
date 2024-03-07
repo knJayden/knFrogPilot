@@ -356,6 +356,9 @@ void ui_update_frogpilot_params(UIState *s) {
   scene.experimental_mode_via_screen = params.getBool("ExperimentalModeViaScreen") && params.getBool("ExperimentalModeActivation");
   scene.fahrenheit = params.getBool("Fahrenheit");
 
+  bool longitudinal_tune = params.getBool("LongitudinalTune");
+  scene.traffic_mode = longitudinal_tune && params.getBool("TrafficMode");
+
   scene.model_ui = params.getBool("ModelUI");
   scene.dynamic_path_width = scene.model_ui && params.getBool("DynamicPathWidth");
   scene.hide_lead_marker = scene.model_ui && params.getBool("HideLeadMarker");
@@ -409,7 +412,9 @@ void UIState::updateStatus() {
     if (state == cereal::ControlsState::OpenpilotState::PRE_ENABLED || state == cereal::ControlsState::OpenpilotState::OVERRIDING) {
       status = STATUS_OVERRIDE;
     } else if (scene.always_on_lateral_active) {
-      status = STATUS_LATERAL_ACTIVE;
+      status = STATUS_ALWAYS_ON_LATERAL_ACTIVE;
+    } else if (scene.traffic_mode_active) {
+      status = STATUS_TRAFFIC_MODE_ACTIVE;
     } else {
       status = controls_state.getEnabled() ? STATUS_ENGAGED : STATUS_DISENGAGED;
     }
@@ -485,6 +490,9 @@ void UIState::update() {
   }
   if (scene.random_events) {
     scene.current_random_event = paramsMemory.getInt("CurrentRandomEvent");
+  }
+  if (scene.traffic_mode) {
+    scene.traffic_mode_active = scene.enabled && paramsMemory.getBool("TrafficModeActive");
   }
 }
 
