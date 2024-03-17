@@ -119,22 +119,23 @@ struct CarEvent @0x9b1657f34caf3ad3 {
 
     # FrogPilot events
     accel30 @120;
-    firefoxSteerSaturated @121;
-    frogSteerSaturated @122;
-    greenLight @123;
-    holidayActive @124;
-    laneChangeBlockedLoud @125;
-    leadDeparting @126;
-    noLaneAvailable @127;
-    openpilotCrashed @128;
-    openpilotCrashedRandomEvents @129;
-    pedalInterceptorNoBrake @130;
-    speedLimitChanged @131;
-    torqueNNLoad @132;
-    turningLeft @133;
-    turningRight @134;
-    vCruise69 @135;
-    yourFrogTriedToKillMe @136;
+    accel35 @121;
+    firefoxSteerSaturated @122;
+    frogSteerSaturated @123;
+    greenLight @124;
+    holidayActive @125;
+    laneChangeBlockedLoud @126;
+    leadDeparting @127;
+    noLaneAvailable @128;
+    openpilotCrashed @129;
+    openpilotCrashedRandomEvents @130;
+    pedalInterceptorNoBrake @131;
+    speedLimitChanged @132;
+    torqueNNLoad @133;
+    turningLeft @134;
+    turningRight @135;
+    vCruise69 @136;
+    yourFrogTriedToKillMe @137;
 
     radarCanErrorDEPRECATED @15;
     communityFeatureDisallowedDEPRECATED @62;
@@ -432,8 +433,12 @@ struct CarControl {
       angry @9;
       fart @10;
       firefox @11;
-      noice @12;
-      uwu @13;
+      nessie @12;
+      noice @13;
+      uwu @14;
+
+      # Other
+      goat @15;
     }
   }
 

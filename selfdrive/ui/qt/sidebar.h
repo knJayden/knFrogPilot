@@ -84,5 +84,4 @@ private:
   std::unordered_map<int, QPixmap> home_imgs;
   std::unordered_map<int, QPixmap> settings_imgs;
   std::vector<QColor> currentColors;
-  std::vector<QColor> currentHolidayTheme;
 };

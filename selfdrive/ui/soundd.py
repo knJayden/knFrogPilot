@@ -47,7 +47,11 @@ sound_list: Dict[int, Tuple[str, Optional[int], float]] = {
   AudibleAlert.fart: ("fart.wav", 1, MAX_VOLUME),
   AudibleAlert.firefox: ("firefox.wav", 1, MAX_VOLUME),
   AudibleAlert.noice: ("noice.wav", 1, MAX_VOLUME),
+  AudibleAlert.nessie: ("nessie.wav", 1, MAX_VOLUME),
   AudibleAlert.uwu: ("uwu.wav", 1, MAX_VOLUME),
+
+  # Other
+  AudibleAlert.goat: ("goat.wav", 1, MAX_VOLUME),
 }
 
 def check_controls_timeout_alert(sm):
@@ -192,7 +196,9 @@ class Soundd:
       AudibleAlert.angry: MAX_VOLUME,
       AudibleAlert.fart: MAX_VOLUME,
       AudibleAlert.firefox: MAX_VOLUME,
+      AudibleAlert.nessie: MAX_VOLUME,
       AudibleAlert.noice: MAX_VOLUME,
+      AudibleAlert.uwu: MAX_VOLUME,
     }
 
     self.alert_volume_control = self.params.get_bool("AlertVolumeControl")
@@ -207,7 +213,9 @@ class Soundd:
       AudibleAlert.promptDistracted: self.params.get_int("PromptDistractedVolume"),
 
       AudibleAlert.warningSoft: self.params.get_int("WarningSoftVolume"),
-      AudibleAlert.warningImmediate: self.params.get_int("WarningImmediateVolume")
+      AudibleAlert.warningImmediate: self.params.get_int("WarningImmediateVolume"),
+
+      AudibleAlert.goat: self.params.get_int("WarningSoftVolume"),
     }
 
     custom_theme = self.params.get_bool("CustomTheme")

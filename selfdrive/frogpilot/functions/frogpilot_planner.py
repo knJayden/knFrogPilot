@@ -14,10 +14,10 @@ from openpilot.selfdrive.frogpilot.functions.conditional_experimental_mode impor
 from openpilot.selfdrive.frogpilot.functions.map_turn_speed_controller import MapTurnSpeedController
 from openpilot.selfdrive.frogpilot.functions.speed_limit_controller import SpeedLimitController
 
+TRAFFIC_MODE_BP = [0., CITY_SPEED_LIMIT]
+TRAFFIC_MODE_T_FOLLOW = [.50, 1.]
 
 TARGET_LAT_A = 1.9  # m/s^2
-
-TRAFFIC_MODE_BP = [0., CITY_SPEED_LIMIT / 4, CITY_SPEED_LIMIT / 3, CITY_SPEED_LIMIT / 2, CITY_SPEED_LIMIT]
 
 class FrogPilotPlanner:
   def __init__(self, CP, params, params_memory):
@@ -93,7 +93,7 @@ class FrogPilotPlanner:
     # Update the current state of "Traffic Mode"
     self.traffic_mode_active = self.traffic_mode and self.params_memory.get_bool("TrafficModeActive")
     if self.traffic_mode_active:
-      self.traffic_mode_t_follow = interp(v_ego, TRAFFIC_MODE_BP, [.50, .65, .80, .95, 1.])
+      self.traffic_mode_t_follow = interp(v_ego, TRAFFIC_MODE_BP, TRAFFIC_MODE_T_FOLLOW)
 
     # Update the desired stopping distance
     self.stop_distance = STOP_DISTANCE
@@ -179,7 +179,7 @@ class FrogPilotPlanner:
     targets = [self.mtsc_target, max(self.overridden_speed, self.slc_target) - v_ego_diff, self.vtsc_target]
     filtered_targets = [target for target in targets if target > CRUISING_SPEED]
 
-    return min(filtered_targets + [v_cruise]) if filtered_targets else v_cruise
+    return min(filtered_targets) if filtered_targets else v_cruise
 
   def publish(self, sm, pm, mpc):
     frogpilot_plan_send = messaging.new_message('frogpilotPlan')

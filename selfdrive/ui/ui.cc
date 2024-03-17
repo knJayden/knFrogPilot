@@ -482,18 +482,10 @@ void UIState::update() {
   }
 
   // FrogPilot live variables that need to be constantly checked
-  if (scene.conditional_experimental) {
-    scene.conditional_status = paramsMemory.getInt("CEStatus");
-  }
-  if (scene.holiday_themes) {
-    scene.current_holiday_theme = paramsMemory.getInt("CurrentHolidayTheme");
-  }
-  if (scene.random_events) {
-    scene.current_random_event = paramsMemory.getInt("CurrentRandomEvent");
-  }
-  if (scene.traffic_mode) {
-    scene.traffic_mode_active = scene.enabled && paramsMemory.getBool("TrafficModeActive");
-  }
+  scene.conditional_status = scene.conditional_experimental ? paramsMemory.getInt("CEStatus") : 0;
+  scene.current_holiday_theme = scene.holiday_themes ? paramsMemory.getInt("CurrentHolidayTheme") : 0;
+  scene.current_random_event = scene.random_events ? paramsMemory.getInt("CurrentRandomEvent") : 0;
+  scene.traffic_mode_active = scene.traffic_mode && scene.enabled && paramsMemory.getBool("TrafficModeActive");
 }
 
 void UIState::setPrimeType(PrimeType type) {

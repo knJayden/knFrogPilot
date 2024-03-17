@@ -88,8 +88,9 @@ class CarD:
       get_one_can(self.can_sock)
 
       num_pandas = len(messaging.recv_one_retry(self.sm.sock['pandaStates']).pandaStates)
-      experimental_long_allowed = self.params.get_bool("ExperimentalLongitudinalEnabled")
-      self.CI, self.CP = get_car(self.can_sock, self.pm.sock['sendcan'], experimental_long_allowed, num_pandas)
+      disable_openpilot_longitudinal = self.params.get_bool("DisableOpenpilotLongitudinal")
+      experimental_long_allowed = self.params.get_bool("ExperimentalLongitudinalEnabled") and not disable_openpilot_longitudinal
+      self.CI, self.CP = get_car(self.can_sock, self.pm.sock['sendcan'], experimental_long_allowed, disable_openpilot_longitudinal, num_pandas)
     else:
       self.CI, self.CP = CI, CI.CP
 
@@ -630,9 +631,14 @@ class Controls:
       else:
         self.max_acceleration = 0
 
-      if self.max_acceleration >= 3.0 and acceleration < 1.5:
+      if 3.5 > self.max_acceleration >= 3.0 and acceleration < 1.5:
         self.events.add(EventName.accel30)
         self.params_memory.put_int("CurrentRandomEvent", 2)
+        self.random_event_triggered = True
+        self.max_acceleration = 0
+      elif self.max_acceleration >= 3.5 and acceleration < 1.5:
+        self.events.add(EventName.accel35)
+        self.params_memory.put_int("CurrentRandomEvent", 3)
         self.random_event_triggered = True
         self.max_acceleration = 0
 

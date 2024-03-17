@@ -50,7 +50,7 @@ Sidebar::Sidebar(QWidget *parent) : QFrame(parent), onroad(false), flag_pressed(
   isStorageUsed = params.getBool("ShowStorageUsed");
 
   holidayThemeConfiguration = {
-    {1, {"april_fools", {QColor(23, 134, 68)}}},
+    {1, {"april_fools", {QColor(255, 165, 0)}}},
     {2, {"christmas", {QColor(0, 72, 255)}}},
     {3, {"cinco_de_mayo", {QColor(255, 0, 0)}}},
     {4, {"easter", {QColor(200, 150, 200)}}},
@@ -181,7 +181,7 @@ void Sidebar::updateState(const UIState &s) {
     home_img = home_imgs[scene.current_holiday_theme];
     flag_img = flag_imgs[scene.current_holiday_theme];
     settings_img = settings_imgs[scene.current_holiday_theme];
-    currentHolidayTheme = holidayThemeConfiguration[scene.current_holiday_theme].second;
+    currentColors = holidayThemeConfiguration[scene.current_holiday_theme].second;
   } else {
     home_img = home_imgs[scene.custom_icons];
     flag_img = flag_imgs[scene.custom_icons];

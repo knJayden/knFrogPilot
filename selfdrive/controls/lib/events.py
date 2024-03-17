@@ -1014,7 +1014,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
       "Turn Exceeds Steering Limit",
       "JESUS TAKE THE WHEEL!!",
       AlertStatus.userPrompt, AlertSize.mid,
-      Priority.LOW, VisualAlert.steerRequired, AudibleAlert.warningSoft, 2.),
+      Priority.LOW, VisualAlert.steerRequired, AudibleAlert.goat, 2.),
   },
 
   EventName.greenLight: {
@@ -1100,6 +1100,14 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
       "(⁄ ⁄•⁄ω⁄•⁄ ⁄)",
       AlertStatus.frogpilot, AlertSize.mid,
       Priority.LOW, VisualAlert.none, AudibleAlert.uwu, 4.),
+  },
+
+  EventName.accel35: {
+    ET.WARNING: Alert(
+      "I ain't giving you no tree-fiddy",
+      "you damn Loch Ness monsta!",
+      AlertStatus.frogpilot, AlertSize.mid,
+      Priority.LOW, VisualAlert.none, AudibleAlert.nessie, 4.),
   },
 
   EventName.firefoxSteerSaturated: {

@@ -88,6 +88,7 @@ private:
 
   bool firefoxRandomEventTriggered;
   bool rotatingWheel;
+  bool treeFiddyRandomEventTriggered;
   bool weebRandomEventTriggered;
 
   int steeringAngleDeg;

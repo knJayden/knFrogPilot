@@ -98,6 +98,17 @@ FrogPilotVehiclesPanel::FrogPilotVehiclesPanel(SettingsWindow *parent) : FrogPil
   ParamControl *forceFingerprint = new ParamControl("ForceFingerprint", "Disable Automatic Fingerprint Detection", "Forces the selected fingerprint and prevents it from ever changing.", "", this);
   addItem(forceFingerprint);
 
+  ParamControl *disableOpenpilotLong = new ParamControl("DisableOpenpilotLongitudinal", "Disable Openpilot Longitudinal Control", "Disables openpilot longitudinal control to use stock ACC.", "", this);
+  addItem(disableOpenpilotLong);
+
+  QObject::connect(disableOpenpilotLong, &ToggleControl::toggleFlipped, [=]() {
+    if (started) {
+      if (FrogPilotConfirmationDialog::toggle("Reboot required to take effect.", "Reboot Now", this)) {
+        Hardware::reboot();
+      }
+    }
+  });
+
   std::vector<std::tuple<QString, QString, QString, QString>> vehicleToggles {
     {"EVTable", "EV Lookup Tables", "Smoothen out the gas and brake controls for EV vehicles.", ""},
     {"GasRegenCmd", "GM Truck Gas Tune", "Increase acceleration and smoothen brake to stop. For use on Silverado/Sierra only.", ""},

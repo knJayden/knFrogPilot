@@ -21,7 +21,7 @@ BUTTONS_DICT = {Buttons.RES_ACCEL: ButtonType.accelCruise, Buttons.SET_DECEL: Bu
 
 class CarInterface(CarInterfaceBase):
   @staticmethod
-  def _get_params(ret, params, candidate, fingerprint, car_fw, experimental_long, docs):
+  def _get_params(ret, params, candidate, fingerprint, car_fw, experimental_long, disable_openpilot_longitudinal, docs):
     ret.carName = "hyundai"
     ret.radarUnavailable = RADAR_START_ADDR not in fingerprint[1] or DBC[ret.carFingerprint]["radar"] is None
 
@@ -276,7 +276,7 @@ class CarInterface(CarInterfaceBase):
       ret.longitudinalTuning.kpV = [0.5]
       ret.longitudinalTuning.kiV = [0.0]
       ret.experimentalLongitudinalAvailable = candidate not in (UNSUPPORTED_LONGITUDINAL_CAR | CAMERA_SCC_CAR)
-    ret.openpilotLongitudinalControl = experimental_long and ret.experimentalLongitudinalAvailable
+    ret.openpilotLongitudinalControl = experimental_long and ret.experimentalLongitudinalAvailable and not disable_openpilot_longitudinal
     ret.pcmCruise = not ret.openpilotLongitudinalControl
 
     ret.stoppingControl = True

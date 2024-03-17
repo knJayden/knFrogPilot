@@ -12,7 +12,7 @@ GearShifter = car.CarState.GearShifter
 
 class CarInterface(CarInterfaceBase):
   @staticmethod
-  def _get_params(ret, params, candidate, fingerprint, car_fw, experimental_long, docs):
+  def _get_params(ret, params, candidate, fingerprint, car_fw, experimental_long, disable_openpilot_longitudinal, docs):
     ret.carName = "ford"
     ret.dashcamOnly = False
 
@@ -34,7 +34,7 @@ class CarInterface(CarInterfaceBase):
     ret.experimentalLongitudinalAvailable = True
     if experimental_long:
       ret.safetyConfigs[-1].safetyParam |= Panda.FLAG_FORD_LONG_CONTROL
-      ret.openpilotLongitudinalControl = True
+      ret.openpilotLongitudinalControl = True and not disable_openpilot_longitudinal
 
     if candidate in CANFD_CAR:
       ret.safetyConfigs[-1].safetyParam |= Panda.FLAG_FORD_CANFD

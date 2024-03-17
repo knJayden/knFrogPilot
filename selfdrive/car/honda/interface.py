@@ -39,7 +39,7 @@ class CarInterface(CarInterfaceBase):
       return CarControllerParams.NIDEC_ACCEL_MIN, interp(current_speed, ACCEL_MAX_BP, ACCEL_MAX_VALS)
 
   @staticmethod
-  def _get_params(ret, params, candidate, fingerprint, car_fw, experimental_long, docs):
+  def _get_params(ret, params, candidate, fingerprint, car_fw, experimental_long, disable_openpilot_longitudinal, docs):
     ret.carName = "honda"
 
     if candidate in HONDA_BOSCH:
@@ -49,12 +49,12 @@ class CarInterface(CarInterfaceBase):
       # WARNING: THIS DISABLES AEB!
       # If Bosch radarless, this blocks ACC messages from the camera
       ret.experimentalLongitudinalAvailable = True
-      ret.openpilotLongitudinalControl = experimental_long
+      ret.openpilotLongitudinalControl = experimental_long and not disable_openpilot_longitudinal
       ret.pcmCruise = not ret.openpilotLongitudinalControl
     else:
       ret.safetyConfigs = [get_safety_config(car.CarParams.SafetyModel.hondaNidec)]
       ret.enableGasInterceptor = 0x201 in fingerprint[0]
-      ret.openpilotLongitudinalControl = True
+      ret.openpilotLongitudinalControl = True and not params.get_bool("DisableOpenpilotLongitudinal")
 
       ret.pcmCruise = not ret.enableGasInterceptor
 
@@ -122,7 +122,7 @@ class CarInterface(CarInterfaceBase):
         ret.lateralParams.torqueBP, ret.lateralParams.torqueV = [[0, 2564, 8000], [0, 2564, 3840]]
         ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.3], [0.09]]  # 2.5x Modded EPS
       else:
-        ret.lateralParams.torqueBP, ret.lateralParams.torqueV = [[0, 4096], [0, 4096]]  
+        ret.lateralParams.torqueBP, ret.lateralParams.torqueV = [[0, 4096], [0, 4096]]
         ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.8], [0.24]]
 
     elif candidate in (CAR.ACCORD, CAR.ACCORDH):

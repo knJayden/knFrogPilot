@@ -23,7 +23,7 @@ class CarInterface(CarInterfaceBase):
     self.eps_timer_soft_disable_alert = False
 
   @staticmethod
-  def _get_params(ret, params, candidate, fingerprint, car_fw, experimental_long, docs):
+  def _get_params(ret, params, candidate, fingerprint, car_fw, experimental_long, disable_openpilot_longitudinal, docs):
     ret.carName = "volkswagen"
     ret.radarUnavailable = True
 
@@ -86,7 +86,7 @@ class CarInterface(CarInterfaceBase):
     ret.experimentalLongitudinalAvailable = ret.networkLocation == NetworkLocation.gateway or docs
     if experimental_long:
       # Proof-of-concept, prep for E2E only. No radar points available. Panda ALLOW_DEBUG firmware required.
-      ret.openpilotLongitudinalControl = True
+      ret.openpilotLongitudinalControl = True and not disable_openpilot_longitudinal
       ret.safetyConfigs[0].safetyParam |= Panda.FLAG_VOLKSWAGEN_LONG_CONTROL
       if ret.transmissionType == TransmissionType.manual:
         ret.minEnableSpeed = 4.5

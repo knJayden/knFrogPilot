@@ -393,6 +393,7 @@ ExperimentalButton::ExperimentalButton(QWidget *parent) : experimental_mode(fals
   };
 
   wheelImagesGif[1] = new QMovie("../frogpilot/assets/random_events/images/weeb_wheel.gif", QByteArray(), this);
+  wheelImagesGif[2] = new QMovie("../frogpilot/assets/random_events/images/tree_fiddy.gif", QByteArray(), this);
 }
 
 void ExperimentalButton::changeMode() {
@@ -421,6 +422,7 @@ void ExperimentalButton::updateState(const UIState &s, bool leadInfo) {
 
   // FrogPilot variables
   firefoxRandomEventTriggered = scene.current_random_event == 1;
+  treeFiddyRandomEventTriggered = scene.current_random_event == 3;
   weebRandomEventTriggered = scene.current_random_event == 2;
   rotatingWheel = scene.rotating_wheel;
   wheelIcon = scene.wheel_icon;
@@ -435,17 +437,28 @@ void ExperimentalButton::updateState(const UIState &s, bool leadInfo) {
     wheelIcon = 7;
     update();
 
-  } else if (weebRandomEventTriggered) {
+  } else if (treeFiddyRandomEventTriggered || weebRandomEventTriggered) {
     if (!gifLabel) {
       gifLabel = new QLabel(this);
-      QMovie *movie = new QMovie("../frogpilot/assets/random_events/images/weeb_wheel.gif");
-      gifLabel->setMovie(movie);
-      movie->start();
-      gifLabel->setFixedSize(img_size, img_size);
-      gifLabel->move((width() - gifLabel->width()) / 2, (height() - gifLabel->height()) / 2 + y_offset);
+      QMovie *movie;
+
+      if (treeFiddyRandomEventTriggered) {
+        movie = wheelImagesGif[2];
+      } else if (weebRandomEventTriggered) {
+        movie = wheelImagesGif[1];
+      }
+
+      if (movie) {
+        gifLabel->setMovie(movie);
+        gifLabel->setFixedSize(img_size, img_size);
+        gifLabel->move((width() - gifLabel->width()) / 2, (height() - gifLabel->height()) / 2 + y_offset);
+      }
+    }
+    if (gifLabel->movie()) {
+      gifLabel->movie()->start();
     }
     gifLabel->show();
-    wheelIconGif = 1;
+    wheelIconGif = weebRandomEventTriggered ? 1 : 2;
     update();
 
   } else {
@@ -648,7 +661,7 @@ void AnnotatedCameraWidget::drawHud(QPainter &p) {
     } else if (scene.reverse_cruise) {
       p.setPen(QPen(QColor(0, 150, 255), 6));
     } else if (trafficModeActive) {
-      p.setPen(QPen(redColor(75), 6));
+      p.setPen(QPen(redColor(255), 6));
     } else {
       p.setPen(QPen(whiteColor(75), 6));
     }
@@ -731,6 +744,7 @@ void AnnotatedCameraWidget::drawHud(QPainter &p) {
       }
       p.restore();
     }
+    p.restore();
   }
 
   // current speed
@@ -1267,9 +1281,9 @@ void AnnotatedCameraWidget::initializeFrogPilotWidgets() {
 
   // Holiday themes configuration
   holidayThemeConfiguration = {
-    {1, {"april_fools", 4, QColor(23, 134, 68, 242), {{0.0, QBrush(QColor::fromHslF(144 / 360., 0.71, 0.31, 0.9))},
-                                                      {0.5, QBrush(QColor::fromHslF(144 / 360., 0.71, 0.31, 0.5))},
-                                                      {1.0, QBrush(QColor::fromHslF(144 / 360., 0.71, 0.31, 0.1))}}}},
+    {1, {"april_fools", 4, QColor(255, 165, 0, 255), {{0.0, QBrush(QColor::fromHslF(39 / 360., 1.0, 0.5, 0.9))},
+                                                      {0.5, QBrush(QColor::fromHslF(39 / 360., 1.0, 0.5, 0.5))},
+                                                      {1.0, QBrush(QColor::fromHslF(39 / 360., 1.0, 0.5, 0.1))}}}},
     {2, {"christmas", 4, QColor(0, 72, 255, 255), {{0.0, QBrush(QColor::fromHslF(223 / 360., 1.0, 0.5, 0.9))},
                                                    {0.5, QBrush(QColor::fromHslF(223 / 360., 1.0, 0.5, 0.5))},
                                                    {1.0, QBrush(QColor::fromHslF(223 / 360., 1.0, 0.5, 0.1))}}}},

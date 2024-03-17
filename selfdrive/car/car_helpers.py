@@ -217,14 +217,15 @@ def crash_log(candidate):
     "AggressiveFollow", "AggressiveJerk", "StandardFollow", "StandardJerk", "RelaxedFollow", "RelaxedJerk", "DeviceShutdown",
     "ExperimentalModeActivation", "ExperimentalModeViaLKAS", "ExperimentalModeViaScreen", "FireTheBabysitter", "NoLogging", "MuteOverheated",
     "OfflineMode", "LateralTune", "ForceAutoTune", "NNFF", "SteerRatio", "UseLateralJerk", "LongitudinalTune", "AccelerationProfile",
-    "DecelerationProfile", "AggressiveAcceleration", "StoppingDistance", "SmoothBraking", "Model", "MTSCEnabled", "DisableMTSCSmoothing",
-    "MTSCAggressiveness", "MTSCCurvatureCheck", "MTSCLimit", "NudgelessLaneChange", "LaneChangeTime", "LaneDetection", "LaneDetectionWidth",
-    "OneLaneChange", "QOLControls", "DisableOnroadUploads", "HigherBitrate", "NavChill", "PauseLateralOnSignal", "ReverseCruise", "ReverseCruiseUI",
-    "SetSpeedLimit", "SetSpeedOffset",  "SpeedLimitController", "Offset1", "Offset2", "Offset3", "Offset4", "SLCConfirmation", "SLCFallback",
-    "SLCPriority1", "SLCPriority2", "SLCPriority3", "SLCOverride", "TurnDesires", "VisionTurnControl", "DisableVTSCSmoothing", "CurveSensitivity",
-    "TurnAggressiveness"
+    "DecelerationProfile", "AggressiveAcceleration", "StoppingDistance", "LeadDetectionThreshold", "SmoothBraking", "Model", "MTSCEnabled",
+    "DisableMTSCSmoothing", "MTSCAggressiveness", "MTSCCurvatureCheck", "MTSCLimit", "NudgelessLaneChange", "LaneChangeTime", "LaneDetection",
+    "LaneDetectionWidth", "OneLaneChange", "QOLControls", "DisableOnroadUploads", "HigherBitrate", "NavChill", "PauseLateralOnSignal", "ReverseCruise",
+    "ReverseCruiseUI", "SetSpeedLimit", "SetSpeedOffset",  "SpeedLimitController", "Offset1", "Offset2", "Offset3", "Offset4", "SLCConfirmation",
+    "SLCFallback", "SLCPriority1", "SLCPriority2", "SLCPriority3", "SLCOverride", "TurnDesires", "VisionTurnControl", "DisableVTSCSmoothing",
+    "CurveSensitivity", "TurnAggressiveness"
   ], [
-    "EVTable", "GasRegenCmd", "LongPitch", "LowerVolt", "CrosstrekTorque", "CydiaTune", "DragonPilotTune", "FrogsGoMooTune", "LockDoors", "SNGHack"
+    "ForceFingerprint", "DisableOpenpilotLongitudinal", "EVTable", "GasRegenCmd", "LongPitch", "LowerVolt", "CrosstrekTorque", "CydiaTune",
+    "DragonPilotTune", "FrogsGoMooTune", "LockDoors", "SNGHack"
   ], [
     "CustomTheme", "HolidayThemes", "CustomColors", "CustomIcons", "CustomSignals", "CustomSounds", "GoatScream", "AlertVolumeControl", "DisengageVolume",
     "EngageVolume", "PromptVolume", "PromptDistractedVolume", "RefuseVolume", "WarningSoftVolume", "WarningImmediateVolume", "CameraView",
@@ -246,7 +247,7 @@ def crash_log(candidate):
       set_sentry_scope(scope, chunks, label)
     sentry.capture_warning(f"Fingerprinted: {candidate}", serial_id)
 
-def get_car(logcan, sendcan, experimental_long_allowed, num_pandas=1):
+def get_car(logcan, sendcan, experimental_long_allowed, disable_openpilot_longitudinal, num_pandas=1):
   params = Params()
   car_brand = params.get("CarMake", encoding='utf-8')
   car_model = params.get("CarModel", encoding='utf-8')
@@ -273,7 +274,7 @@ def get_car(logcan, sendcan, experimental_long_allowed, num_pandas=1):
   setFingerprintLog.start()
 
   CarInterface, CarController, CarState = interfaces[candidate]
-  CP = CarInterface.get_params(params, candidate, fingerprints, car_fw, experimental_long_allowed, docs=False)
+  CP = CarInterface.get_params(params, candidate, fingerprints, car_fw, experimental_long_allowed, disable_openpilot_longitudinal, docs=False)
   CP.carVin = vin
   CP.carFw = car_fw
   CP.fingerprintSource = source

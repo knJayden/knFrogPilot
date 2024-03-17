@@ -9,7 +9,7 @@ from openpilot.selfdrive.car.subaru.values import CAR, GLOBAL_ES_ADDR, LKAS_ANGL
 class CarInterface(CarInterfaceBase):
 
   @staticmethod
-  def _get_params(ret, params, candidate, fingerprint, car_fw, experimental_long, docs):
+  def _get_params(ret, params, candidate, fingerprint, car_fw, experimental_long, disable_openpilot_longitudinal, docs):
     crosstrek_torque_increase = params.get_bool("CrosstrekTorque")
 
     ret.carName = "subaru"
@@ -121,7 +121,7 @@ class CarInterface(CarInterfaceBase):
       raise ValueError(f"unknown car: {candidate}")
 
     ret.experimentalLongitudinalAvailable = candidate not in (GLOBAL_GEN2 | PREGLOBAL_CARS | LKAS_ANGLE | HYBRID_CARS)
-    ret.openpilotLongitudinalControl = experimental_long and ret.experimentalLongitudinalAvailable
+    ret.openpilotLongitudinalControl = experimental_long and ret.experimentalLongitudinalAvailable and not disable_openpilot_longitudinal
 
     if candidate in GLOBAL_GEN2 and ret.openpilotLongitudinalControl:
       ret.flags |= SubaruFlags.DISABLE_EYESIGHT.value
