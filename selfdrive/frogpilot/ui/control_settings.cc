@@ -17,18 +17,19 @@ FrogPilotControlsPanel::FrogPilotControlsPanel(SettingsWindow *parent) : FrogPil
     {"HideCEMStatusBar", "Hide the Status Bar", "Don't use the status bar for 'Conditional Experimental Mode'.", ""},
 
     {"CustomPersonalities", "Custom Driving Personalities", "Customize the driving personality profiles to your driving style.", "../frogpilot/assets/toggle_icons/icon_custom.png"},
-    {"DeviceShutdown", "Device Shutdown Timer", "Configure the timer for automatic device shutdown when offroad conserving energy and preventing battery drain.", "../frogpilot/assets/toggle_icons/icon_time.png"},
+
+    {"DeviceManagement", "Device Management", "Customize some device behaviors for more personalized control.", "../frogpilot/assets/toggle_icons/icon_device.png"},
+    {"MuteOverheated", "Bypass Thermal Safety Limits", "Allow the device to run at any temperature even above comma's recommended thermal limits.", ""},
+    {"DeviceShutdown", "Device Shutdown Timer", "Configure the timer for automatic device shutdown when offroad conserving energy and preventing battery drain.", ""},
+    {"NoLogging", "Disable Logging", "Turn off all data tracking to enhance privacy or reduce thermal load.\n\nWARNING: This action will prevent drive recording and data cannot be recovered!", ""},
+    {"NoUploads", "Disable Uploads", "Turn off all data uploads to comma's servers.\n\nWARNING: This action will prevent your drives from appearing on comma connect which may impact debugging and support!", ""},
+    {"LowVoltageShutdown", "Low Voltage Shutdown Threshold", "Configure the threshold for automatic device shutdown when your battery reaches a specific voltage level to prevent killing your battery.", ""},
+    {"OfflineMode", "Offline Mode", "Allow the device to be offline indefinitely.", ""},
 
     {"ExperimentalModeActivation", "Experimental Mode Activation", "Toggle Experimental Mode with either buttons on ethe steering wheel or the screen.\n\nOverrides 'Conditional Experimental Mode'.", "../assets/img_experimental_white.svg"},
     {"ExperimentalModeViaLKAS", "Double Clicking the LKAS Button", "Enable/disable 'Experimental Mode' by double clicking the 'LKAS' button on your steering wheel.", ""},
     {"ExperimentalModeViaScreen", "Double Taping the Onroad UI", "Enable/disable 'Experimental Mode' by double taping the onroad UI within a 0.5 second time frame.", ""},
     {"ExperimentalModeViaDistance", "Long Pressing the Distance Button", "Enable/disable 'Experimental Mode' by holding down the 'distance' button on your steering wheel for 0.5 seconds.", ""},
-
-    {"FireTheBabysitter", "Fire the Babysitter", "Deactivate some of openpilot's 'Babysitter' protocols for more user autonomy.", "../frogpilot/assets/toggle_icons/icon_babysitter.png"},
-    {"MuteOverheated", "Bypass Thermal Safety Limits", "Allow the device to run at any temperature even above comma's recommended thermal limits.", ""},
-    {"NoLogging", "Disable Logging", "Turn off all data tracking to enhance privacy or reduce thermal load.\n\nWARNING: This action will prevent drive recording and data cannot be recovered!", ""},
-    {"NoUploads", "Disable Uploads", "Turn off all data uploads to comma's servers.\n\nWARNING: This action will prevent your drives from appearing on comma connect which may impact debugging and support!", ""},
-    {"OfflineMode", "Offline Mode", "Allow the device to be offline indefinitely.", ""},
 
     {"LateralTune", "Lateral Tuning", "Modify openpilot's steering behavior.", "../frogpilot/assets/toggle_icons/icon_lateral_tune.png"},
     {"ForceAutoTune", "Force Auto Tune", "Forces comma's auto lateral tuning for unsupported vehicles.", ""},
@@ -199,13 +200,6 @@ FrogPilotControlsPanel::FrogPilotControlsPanel(SettingsWindow *parent) : FrogPil
       relaxedProfile = new FrogPilotDualParamControl(relaxedFollow, relaxedJerk, this, true);
       addItem(relaxedProfile);
 
-    } else if (param == "DeviceShutdown") {
-      std::map<int, QString> shutdownLabels;
-      for (int i = 0; i <= 33; ++i) {
-        shutdownLabels[i] = i == 0 ? "Instant" : i <= 3 ? QString::number(i * 15) + " mins" : QString::number(i - 3) + (i == 4 ? " hour" : " hours");
-      }
-      toggle = new FrogPilotParamValueControl(param, title, desc, icon, 0, 33, shutdownLabels, this, false);
-
     } else if (param == "ExperimentalModeActivation") {
       FrogPilotParamManageControl *experimentalModeActivationToggle = new FrogPilotParamManageControl(param, title, desc, icon, this);
       QObject::connect(experimentalModeActivationToggle, &FrogPilotParamManageControl::manageButtonClicked, this, [this]() {
@@ -216,15 +210,23 @@ FrogPilotControlsPanel::FrogPilotControlsPanel(SettingsWindow *parent) : FrogPil
       });
       toggle = experimentalModeActivationToggle;
 
-    } else if (param == "FireTheBabysitter") {
-      FrogPilotParamManageControl *fireTheBabysitterToggle = new FrogPilotParamManageControl(param, title, desc, icon, this);
-      QObject::connect(fireTheBabysitterToggle, &FrogPilotParamManageControl::manageButtonClicked, this, [this]() {
+    } else if (param == "DeviceManagement") {
+      FrogPilotParamManageControl *deviceManagementToggle = new FrogPilotParamManageControl(param, title, desc, icon, this);
+      QObject::connect(deviceManagementToggle, &FrogPilotParamManageControl::manageButtonClicked, this, [this]() {
         parentToggleClicked();
         for (auto &[key, toggle] : toggles) {
-          toggle->setVisible(fireTheBabysitterKeys.find(key.c_str()) != fireTheBabysitterKeys.end());
+          toggle->setVisible(deviceManagementKeys.find(key.c_str()) != deviceManagementKeys.end());
         }
       });
-      toggle = fireTheBabysitterToggle;
+      toggle = deviceManagementToggle;
+    } else if (param == "DeviceShutdown") {
+      std::map<int, QString> shutdownLabels;
+      for (int i = 0; i <= 33; ++i) {
+        shutdownLabels[i] = i == 0 ? "Instant" : i <= 3 ? QString::number(i * 15) + " mins" : QString::number(i - 3) + (i == 4 ? " hour" : " hours");
+      }
+      toggle = new FrogPilotParamValueControl(param, title, desc, icon, 0, 33, shutdownLabels, this, false);
+    } else if (param == "LowVoltageShutdown") {
+      toggle = new FrogPilotParamValueControl(param, title, desc, icon, 11.8, 12.5, std::map<int, QString>(), this, false, " volts", 1, 0.01);
 
     } else if (param == "LateralTune") {
       FrogPilotParamManageControl *lateralTuneToggle = new FrogPilotParamManageControl(param, title, desc, icon, this);
@@ -694,7 +696,7 @@ void FrogPilotControlsPanel::hideSubToggles() {
     bool subToggles = aolKeys.find(key.c_str()) != aolKeys.end() ||
                       conditionalExperimentalKeys.find(key.c_str()) != conditionalExperimentalKeys.end() ||
                       experimentalModeActivationKeys.find(key.c_str()) != experimentalModeActivationKeys.end() ||
-                      fireTheBabysitterKeys.find(key.c_str()) != fireTheBabysitterKeys.end() ||
+                      deviceManagementKeys.find(key.c_str()) != deviceManagementKeys.end() ||
                       laneChangeKeys.find(key.c_str()) != laneChangeKeys.end() ||
                       lateralTuneKeys.find(key.c_str()) != lateralTuneKeys.end() ||
                       longitudinalTuneKeys.find(key.c_str()) != longitudinalTuneKeys.end() ||

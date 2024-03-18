@@ -41,8 +41,8 @@ private:
 
   std::set<QString> aolKeys = {"AlwaysOnLateralMain", "HideAOLStatusBar"};
   std::set<QString> conditionalExperimentalKeys = {"CECurves", "CECurvesLead", "CESlowerLead", "CENavigation", "CEStopLights", "CESignal", "HideCEMStatusBar"};
+  std::set<QString> deviceManagementKeys = {"DeviceShutdown", "NoLogging", "MuteOverheated", "NoUploads", "LowVoltageShutdown", "OfflineMode"};
   std::set<QString> experimentalModeActivationKeys = {"ExperimentalModeViaDistance", "ExperimentalModeViaLKAS", "ExperimentalModeViaScreen"};
-  std::set<QString> fireTheBabysitterKeys = {"NoLogging", "MuteOverheated", "NoUploads", "OfflineMode"};
   std::set<QString> laneChangeKeys = {"LaneChangeTime", "LaneDetection", "LaneDetectionWidth", "OneLaneChange"};
   std::set<QString> lateralTuneKeys = {"ForceAutoTune", "NNFF", "SteerRatio", "TurnDesires", "UseLateralJerk"};
   std::set<QString> longitudinalTuneKeys = {"AccelerationProfile", "DecelerationProfile", "AggressiveAcceleration", "LeadDetectionThreshold", "SmoothBraking", "StoppingDistance", "TrafficMode"};

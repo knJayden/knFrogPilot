@@ -239,7 +239,7 @@ class Updater:
     self._has_internet: bool = False
 
     # FrogPilot variables
-    self.disable_internet_check = self.params.get_bool("OfflineMode") and self.params.get_bool("FireTheBabysitter")
+    self.disable_internet_check = self.params.get_bool("OfflineMode") and self.params.get_bool("DeviceManagement")
 
   @property
   def has_internet(self) -> bool:

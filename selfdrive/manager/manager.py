@@ -130,6 +130,7 @@ def manager_init() -> None:
     ("CustomUI", "1"),
     ("CydiaTune", "0"),
     ("DecelerationProfile", "1"),
+    ("DeviceManagement", "1"),
     ("DeviceShutdown", "9"),
     ("DisableMTSCSmoothing", "0"),
     ("DisableOnroadUploads", "0"),
@@ -146,7 +147,6 @@ def manager_init() -> None:
     ("ExperimentalModeViaLKAS", "0"),
     ("ExperimentalModeViaScreen", "1"),
     ("Fahrenheit", "0"),
-    ("FireTheBabysitter", "0"),
     ("ForceAutoTune", "0"),
     ("ForceFingerprint", "0"),
     ("ForceMPHDashboard", "0"),
@@ -183,6 +183,7 @@ def manager_init() -> None:
     ("LongPitch", "1"),
     ("LoudBlindspotAlert", "0"),
     ("LowerVolt", "1"),
+    ("LowVoltageShutdown", "11.8"),
     ("MapsSelected", ""),
     ("MapStyle", "0"),
     ("MTSCAggressiveness", "100"),
@@ -352,7 +353,7 @@ def manager_cleanup() -> None:
 
 
 def update_frogpilot_params(params, params_memory):
-  keys = ["DisableOnroadUploads", "FireTheBabysitter", "NoLogging", "NoUploads", "RoadNameUI", "SpeedLimitController"]
+  keys = ["DeviceManagement", "DisableOnroadUploads", "NoLogging", "NoUploads", "RoadNameUI", "SpeedLimitController"]
   for key in keys:
     params_memory.put_bool(key, params.get_bool(key))
 

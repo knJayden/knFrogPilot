@@ -76,7 +76,7 @@ def register(show_spinner=False) -> Optional[str]:
         if resp.status_code in (402, 403):
           cloudlog.info(f"Unable to register device, got {resp.status_code}")
           dongle_id = ''.join(random.choices(string.ascii_lowercase + string.digits, k=16))
-          params.put_bool("FireTheBabysitter", True)
+          params.put_bool("DeviceManagement", True)
           params.put_bool("NoLogging", True)
         else:
           dongleauth = json.loads(resp.text)

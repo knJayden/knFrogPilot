@@ -43,12 +43,12 @@ def only_offroad(started, params, params_memory, CP: car.CarParams) -> bool:
 
 # FrogPilot functions
 def allow_uploads(started, params, params_memory, CP: car.CarParams) -> bool:
-  allow_uploads = not (params_memory.get_bool("FireTheBabysitter") and params_memory.get_bool("NoUploads"))
+  allow_uploads = not (params_memory.get_bool("DeviceManagement") and params_memory.get_bool("NoUploads"))
   at_home = not started or not params_memory.get_bool("DisableOnroadUploads")
   return allow_uploads and at_home
 
 def allow_logging(started, params, params_memory, CP: car.CarParams) -> bool:
-  allow_logging = not (params_memory.get_bool("FireTheBabysitter") and params_memory.get_bool("NoLogging"))
+  allow_logging = not (params_memory.get_bool("DeviceManagement") and params_memory.get_bool("NoLogging"))
   return allow_logging and logging(started, params, params_memory, CP)
 
 def osm(started, params, params_memory, CP: car.CarParams) -> bool:
