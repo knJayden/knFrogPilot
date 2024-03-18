@@ -385,7 +385,4 @@ class CarState(CarStateBase):
         ("PCS_HUD", 1),
       ]
 
-    if not CP.openpilotLongitudinalControl and CP.carFingerprint not in (TSS2_CAR, UNSUPPORTED_DSU_CAR):
-      messages.append(("ACC_CONTROL", 33))
-
     return CANParser(DBC[CP.carFingerprint]["pt"], messages, 2)
