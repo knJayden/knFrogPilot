@@ -86,6 +86,7 @@ private:
   QMovie engage_gif;
   QLabel *gifLabel;
 
+  bool docRandomEventTriggered;
   bool firefoxRandomEventTriggered;
   bool rotatingWheel;
   bool treeFiddyRandomEventTriggered;

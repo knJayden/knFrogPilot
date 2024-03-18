@@ -636,9 +636,14 @@ class Controls:
         self.params_memory.put_int("CurrentRandomEvent", 2)
         self.random_event_triggered = True
         self.max_acceleration = 0
-      elif self.max_acceleration >= 3.5 and acceleration < 1.5:
+      elif 4.0 > self.max_acceleration >= 3.5 and acceleration < 1.5:
         self.events.add(EventName.accel35)
         self.params_memory.put_int("CurrentRandomEvent", 3)
+        self.random_event_triggered = True
+        self.max_acceleration = 0
+      elif self.max_acceleration >= 4.0 and acceleration < 1.5:
+        self.events.add(EventName.accel40)
+        self.params_memory.put_int("CurrentRandomEvent", 4)
         self.random_event_triggered = True
         self.max_acceleration = 0
 

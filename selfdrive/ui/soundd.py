@@ -44,6 +44,7 @@ sound_list: Dict[int, Tuple[str, Optional[int], float]] = {
 
   # Random Events
   AudibleAlert.angry: ("angry.wav", 1, MAX_VOLUME),
+  AudibleAlert.doc: ("doc.wav", 1, MAX_VOLUME),
   AudibleAlert.fart: ("fart.wav", 1, MAX_VOLUME),
   AudibleAlert.firefox: ("firefox.wav", 1, MAX_VOLUME),
   AudibleAlert.noice: ("noice.wav", 1, MAX_VOLUME),
@@ -194,6 +195,7 @@ class Soundd:
   def update_frogpilot_params(self):
     self.random_events_map = {
       AudibleAlert.angry: MAX_VOLUME,
+      AudibleAlert.doc: MAX_VOLUME,
       AudibleAlert.fart: MAX_VOLUME,
       AudibleAlert.firefox: MAX_VOLUME,
       AudibleAlert.nessie: MAX_VOLUME,

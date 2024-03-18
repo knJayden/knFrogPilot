@@ -392,8 +392,9 @@ ExperimentalButton::ExperimentalButton(QWidget *parent) : experimental_mode(fals
     {7, loadPixmap("../frogpilot/assets/random_events/images/firefox.png", {img_size, img_size})},
   };
 
-  wheelImagesGif[1] = new QMovie("../frogpilot/assets/random_events/images/weeb_wheel.gif", QByteArray(), this);
-  wheelImagesGif[2] = new QMovie("../frogpilot/assets/random_events/images/tree_fiddy.gif", QByteArray(), this);
+  wheelImagesGif[1] = new QMovie("../frogpilot/assets/random_events/images/great_scott.gif", QByteArray(), this);
+  wheelImagesGif[2] = new QMovie("../frogpilot/assets/random_events/images/weeb_wheel.gif", QByteArray(), this);
+  wheelImagesGif[3] = new QMovie("../frogpilot/assets/random_events/images/tree_fiddy.gif", QByteArray(), this);
 }
 
 void ExperimentalButton::changeMode() {
@@ -421,6 +422,7 @@ void ExperimentalButton::updateState(const UIState &s, bool leadInfo) {
   }
 
   // FrogPilot variables
+  docRandomEventTriggered = scene.current_random_event == 4;
   firefoxRandomEventTriggered = scene.current_random_event == 1;
   treeFiddyRandomEventTriggered = scene.current_random_event == 3;
   weebRandomEventTriggered = scene.current_random_event == 2;
@@ -437,15 +439,17 @@ void ExperimentalButton::updateState(const UIState &s, bool leadInfo) {
     wheelIcon = 7;
     update();
 
-  } else if (treeFiddyRandomEventTriggered || weebRandomEventTriggered) {
+  } else if (docRandomEventTriggered || treeFiddyRandomEventTriggered || weebRandomEventTriggered) {
     if (!gifLabel) {
       gifLabel = new QLabel(this);
       QMovie *movie;
 
-      if (treeFiddyRandomEventTriggered) {
-        movie = wheelImagesGif[2];
-      } else if (weebRandomEventTriggered) {
+      if (docRandomEventTriggered) {
         movie = wheelImagesGif[1];
+      } else if (treeFiddyRandomEventTriggered) {
+        movie = wheelImagesGif[3];
+      } else if (weebRandomEventTriggered) {
+        movie = wheelImagesGif[2];
       }
 
       if (movie) {
@@ -458,7 +462,7 @@ void ExperimentalButton::updateState(const UIState &s, bool leadInfo) {
       gifLabel->movie()->start();
     }
     gifLabel->show();
-    wheelIconGif = weebRandomEventTriggered ? 1 : 2;
+    wheelIconGif = docRandomEventTriggered ? 1 : weebRandomEventTriggered ? 2 : 3;
     update();
 
   } else {
