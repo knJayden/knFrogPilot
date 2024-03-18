@@ -231,8 +231,9 @@ class FrogPilotPlanner:
     self.relaxed_jerk = params.get_float("RelaxedJerk")
 
     custom_ui = params.get_bool("CustomUI")
-    self.adjacent_lanes = custom_ui and params.get_bool("AdjacentPath")
-    self.blind_spot_path = custom_ui and params.get_bool("BlindSpotPath")
+    custom_paths = custom_ui and params.get_bool("CustomPaths")
+    self.adjacent_lanes = custom_paths and params.get_bool("AdjacentPath")
+    self.blind_spot_path = custom_paths and params.get_bool("BlindSpotPath")
 
     nudgeless_lane_change = params.get_bool("NudgelessLaneChange")
     self.lane_detection = nudgeless_lane_change and params.get_bool("LaneDetection")

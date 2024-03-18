@@ -325,34 +325,36 @@ void ui_update_frogpilot_params(UIState *s) {
   scene.always_on_lateral = params.getBool("AlwaysOnLateral");
   scene.hide_aol_status_bar = scene.always_on_lateral && params.getBool("HideAOLStatusBar");
 
-  scene.camera_view = params.getInt("CameraView");
-  scene.compass = params.getBool("Compass");
-
   scene.conditional_experimental = params.getBool("ConditionalExperimental");
   scene.conditional_speed = scene.conditional_experimental ? params.getInt("CESpeed") : 0;
   scene.conditional_speed_lead = scene.conditional_experimental ? params.getInt("CESpeedLead") : 0;
   scene.hide_cem_status_bar = scene.conditional_experimental && params.getBool("HideCEMStatusBar");
 
   bool custom_onroad_ui = params.getBool("CustomUI");
-  scene.acceleration_path = custom_onroad_ui && params.getBool("AccelerationPath");
-  scene.adjacent_path = custom_onroad_ui && params.getBool("AdjacentPath");
+  bool custom_paths = params.getBool("CustomPaths");
+  scene.acceleration_path = custom_paths && params.getBool("AccelerationPath");
+  scene.adjacent_path = custom_paths && params.getBool("AdjacentPath");
   scene.adjacent_path_metrics = scene.adjacent_path && params.getBool("AdjacentPathMetrics");
-  scene.blind_spot_path = custom_onroad_ui && params.getBool("BlindSpotPath");
+  scene.blind_spot_path = custom_paths && params.getBool("BlindSpotPath");
+  scene.camera_view = custom_onroad_ui ? params.getInt("CameraView") : 0;
+  scene.compass = custom_onroad_ui && params.getBool("Compass");
   scene.fps_counter = custom_onroad_ui && params.getBool("FPSCounter");
   scene.lead_info = custom_onroad_ui && params.getBool("LeadInfo");
   scene.use_si = scene.lead_info && params.getBool("UseSI");
   scene.pedals_on_ui = custom_onroad_ui && params.getBool("PedalsOnUI");
   scene.road_name_ui = custom_onroad_ui && params.getBool("RoadNameUI");
+  scene.rotating_wheel = custom_onroad_ui && params.getBool("RotatingWheel");
+  scene.wheel_icon = custom_onroad_ui ? params.getInt("WheelIcon") : 0;
 
   bool custom_theme = params.getBool("CustomTheme");
   scene.custom_colors = custom_theme ? params.getInt("CustomColors") : 0;
   scene.custom_icons = custom_theme ? params.getInt("CustomIcons") : 0;
   scene.custom_signals = custom_theme ? params.getInt("CustomSignals") : 0;
   scene.holiday_themes = custom_theme && params.getBool("HolidayThemes");
+  scene.random_events = custom_theme && params.getBool("RandomEvents");
 
   scene.disable_smoothing_mtsc = params.getBool("DisableMTSCSmoothing");
   scene.disable_smoothing_vtsc = params.getBool("DisableVTSCSmoothing");
-  scene.driver_camera = params.getBool("DriverCamera");
   scene.experimental_mode_via_screen = params.getBool("ExperimentalModeViaScreen") && params.getBool("ExperimentalModeActivation");
   scene.fahrenheit = params.getBool("Fahrenheit");
 
@@ -368,13 +370,13 @@ void ui_update_frogpilot_params(UIState *s) {
   scene.road_edge_width = params.getInt("RoadEdgesWidth") * (scene.is_metric ? 1.0f : INCH_TO_CM) / 200.0f;
   scene.unlimited_road_ui_length = scene.model_ui && params.getBool("UnlimitedLength");
 
-  scene.numerical_temp = params.getBool("NumericalTemp");
-
   bool quality_of_life_controls = params.getBool("QOLControls");
   scene.reverse_cruise = quality_of_life_controls && params.getBool("ReverseCruise");
   scene.reverse_cruise_ui = scene.reverse_cruise && params.getBool("ReverseCruiseUI");
 
   bool quality_of_life_visuals = params.getBool("QOLVisuals");
+  scene.driver_camera = quality_of_life_visuals && params.getBool("DriverCamera");
+  scene.numerical_temp = quality_of_life_visuals && params.getBool("NumericalTemp");
   scene.full_map = quality_of_life_visuals && params.getBool("FullMap");
   scene.hide_speed = quality_of_life_visuals && params.getBool("HideSpeed");
   scene.hide_speed_ui = scene.hide_speed && params.getBool("HideSpeedUI");
@@ -382,8 +384,6 @@ void ui_update_frogpilot_params(UIState *s) {
   scene.wheel_speed = quality_of_life_visuals && params.getBool("WheelSpeed");
 
   scene.personalities_via_screen = params.getBool("PersonalitiesViaScreen") && params.getBool("AdjustablePersonalities");
-  scene.random_events = params.getBool("RandomEvents");
-  scene.rotating_wheel = params.getBool("RotatingWheel");
 
   bool screen_management = params.getBool("ScreenManagement");
   bool hide_ui_elements = screen_management && params.getBool("HideUIElements");
@@ -401,8 +401,6 @@ void ui_update_frogpilot_params(UIState *s) {
   scene.show_slc_offset = scene.speed_limit_controller && params.getBool("ShowSLCOffset");
   scene.show_slc_offset_ui = scene.speed_limit_controller && params.getBool("ShowSLCOffsetUI");
   scene.use_vienna_slc_sign = scene.speed_limit_controller && params.getBool("UseVienna");
-
-  scene.wheel_icon = params.getInt("WheelIcon");
 }
 
 void UIState::updateStatus() {
