@@ -65,6 +65,7 @@ FrogPilotControlsPanel::FrogPilotControlsPanel(SettingsWindow *parent) : FrogPil
     {"DisableOnroadUploads", "Disable Onroad Uploads", "Prevent large data uploads when onroad.", ""},
     {"HigherBitrate", "Higher Bitrate Recording", "Increases the quality of the footage uploaded to comma connect.", ""},
     {"NavChill", "Navigate on Chill Mode", "Allows cars without longitudinal support to navigate. Allows navigation without experimental mode.", ""},
+    {"PauseLateralSpeed", "Pause Lateral Below", "Pause lateral control on all speeds below this speed.", ""},
     {"PauseLateralOnSignal", "Pause Lateral On Turn Signal Below", "Temporarily disable lateral control during turn signal use below the set speed.", ""},
     {"ReverseCruise", "Reverse Cruise Increase", "Reverses the 'long press' functionality when increasing the max set speed. Useful to increase the max speed quickly.", ""},
     {"SetSpeedOffset", "Set Speed Offset", "Set an offset for your desired set speed.", ""},
@@ -109,6 +110,8 @@ FrogPilotControlsPanel::FrogPilotControlsPanel(SettingsWindow *parent) : FrogPil
         }
       });
       toggle = aolToggle;
+    } else if (param == "PauseLateralSpeed") {
+      toggle = new FrogPilotParamValueControl(param, title, desc, icon, 0, 99, std::map<int, QString>(), this, false, " mph");
 
     } else if (param == "ConditionalExperimental") {
       FrogPilotParamManageControl *conditionalExperimentalToggle = new FrogPilotParamManageControl(param, title, desc, icon, this);
@@ -590,6 +593,7 @@ void FrogPilotControlsPanel::updateMetric() {
     params.putIntNonBlocking("Offset3", std::nearbyint(params.getInt("Offset3") * speedConversion));
     params.putIntNonBlocking("Offset4", std::nearbyint(params.getInt("Offset4") * speedConversion));
     params.putIntNonBlocking("PauseLateralOnSignal", std::nearbyint(params.getInt("PauseLateralOnSignal") * speedConversion));
+    params.putIntNonBlocking("PauseLateralSpeed", std::nearbyint(params.getInt("PauseLateralSpeed") * speedConversion));
     params.putIntNonBlocking("SetSpeedOffset", std::nearbyint(params.getInt("SetSpeedOffset") * speedConversion));
     params.putIntNonBlocking("StoppingDistance", std::nearbyint(params.getInt("StoppingDistance") * distanceConversion));
   }
@@ -601,6 +605,7 @@ void FrogPilotControlsPanel::updateMetric() {
   FrogPilotParamValueControl *offset3Toggle = static_cast<FrogPilotParamValueControl*>(toggles["Offset3"]);
   FrogPilotParamValueControl *offset4Toggle = static_cast<FrogPilotParamValueControl*>(toggles["Offset4"]);
   FrogPilotParamValueControl *pauseLateralToggle = static_cast<FrogPilotParamValueControl*>(toggles["PauseLateralOnSignal"]);
+  FrogPilotParamValueControl *pauseLateralToggleSpeed = static_cast<FrogPilotParamValueControl*>(toggles["PauseLateralSpeed"]);
   FrogPilotParamValueControl *setSpeedOffsetToggle = static_cast<FrogPilotParamValueControl*>(toggles["SetSpeedOffset"]);
   FrogPilotParamValueControl *stoppingDistanceToggle = static_cast<FrogPilotParamValueControl*>(toggles["StoppingDistance"]);
 
@@ -625,6 +630,7 @@ void FrogPilotControlsPanel::updateMetric() {
     offset4Toggle->updateControl(-99, 99, " kph");
 
     pauseLateralToggle->updateControl(0, 150, " kph");
+    pauseLateralToggleSpeed->updateControl(0, 150, " kph");
     setSpeedOffsetToggle->updateControl(0, 150, " kph");
 
     stoppingDistanceToggle->updateControl(0, 5, " meters");
@@ -649,6 +655,7 @@ void FrogPilotControlsPanel::updateMetric() {
     offset4Toggle->updateControl(-99, 99, " mph");
 
     pauseLateralToggle->updateControl(0, 99, " mph");
+    pauseLateralToggleSpeed->updateControl(0, 99, " mph");
     setSpeedOffsetToggle->updateControl(0, 99, " mph");
 
     stoppingDistanceToggle->updateControl(0, 10, " feet");
@@ -661,6 +668,7 @@ void FrogPilotControlsPanel::updateMetric() {
   offset3Toggle->refresh();
   offset4Toggle->refresh();
   pauseLateralToggle->refresh();
+  pauseLateralToggleSpeed->refresh();
   setSpeedOffsetToggle->refresh();
   stoppingDistanceToggle->refresh();
 

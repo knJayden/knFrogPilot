@@ -208,6 +208,7 @@ def manager_init() -> None:
     ("PathEdgeWidth", "20"),
     ("PathWidth", "61"),
     ("PauseLateralOnSignal", "0"),
+    ("PauseLateralSpeed", "0"),
     ("PedalsOnUI", "1"),
     ("PersonalitiesViaScreen", "1"),
     ("PersonalitiesViaWheel", "1"),
