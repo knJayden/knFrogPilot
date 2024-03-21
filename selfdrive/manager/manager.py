@@ -25,7 +25,7 @@ from openpilot.system.version import is_dirty, get_commit, get_version, get_orig
                            get_normalized_origin, terms_version, training_version, \
                            is_tested_branch, is_release_branch, get_commit_date
 
-from openpilot.selfdrive.frogpilot.functions.frogpilot_functions import DEFAULT_MODEL
+from openpilot.selfdrive.frogpilot.functions.model_manager import DEFAULT_MODEL, MODELS_PATH
 
 
 def manager_init() -> None:
@@ -72,7 +72,7 @@ def manager_init() -> None:
   current_model = params.get("Model", encoding='utf-8')
 
   if current_model != DEFAULT_MODEL:
-    models_folder = os.path.join(BASEDIR, 'selfdrive/modeld/models/models')
+    models_folder = MODELS_PATH
     model_exists = current_model in [os.path.splitext(file)[0] for file in os.listdir(models_folder)]
 
     if not model_exists:
@@ -475,6 +475,10 @@ def main() -> None:
     backup_thread.start()
   except subprocess.CalledProcessError as e:
     print(f"Failed to backup openpilot. Error: {e}")
+
+  # Make the models folder if it doesn't exist
+  if not os.path.exists(MODELS_PATH):
+    os.makedirs(MODELS_PATH)
 
   manager_init()
   if os.getenv("PREPAREONLY") is not None:

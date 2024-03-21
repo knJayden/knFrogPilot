@@ -274,8 +274,9 @@ FrogPilotControlsPanel::FrogPilotControlsPanel(SettingsWindow *parent) : FrogPil
 
     } else if (param == "Model") {
       modelSelectorButton = new FrogPilotButtonIconControl(title, tr("SELECT"), desc, icon);
-      QStringList models = {"los-angeles", "certified-herbalist", "duck-amigo", "recertified-herbalist"};
-      QStringList modelLabels = {"Los Angeles (Default)", "Certified Herbalist", "Duck Amigo", "Recertified Herbalist"};
+      QStringList models = QString::fromStdString(params.get("AvailableModels")).split(",");
+      QStringList modelLabels = QString::fromStdString(params.get("AvailableModelsNames")).split(",");
+
       QObject::connect(modelSelectorButton, &FrogPilotButtonIconControl::clicked, this, [this, models, modelLabels]() {
         QString selection = MultiOptionDialog::getSelection(tr("Select a driving model"), modelLabels, "", this);
 

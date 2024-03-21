@@ -223,6 +223,8 @@ std::unordered_map<std::string, uint32_t> keys = {
     {"AMapKey1", PERSISTENT},
     {"AMapKey2", PERSISTENT},
     {"ApiCache_DriveStats", PERSISTENT},
+    {"AvailableModels", PERSISTENT},
+    {"AvailableModelsNames", PERSISTENT},
     {"BlindSpotPath", PERSISTENT},
     {"CameraFPS", PERSISTENT},
     {"CameraView", PERSISTENT},
